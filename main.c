@@ -9,26 +9,24 @@ int main(int argc, char *argv[])
   for (int i = 0; i < MAX_PROCESSES; i++)
     processTable[i] = NULL;
 
-  pid = createProcess("root", 0, 0, 0);
+  pid = create("idle", 0, 0, 0);
 
   for (int i = 1; i < MAX_PROCESSES; i++)
   {
     char *name = malloc(10);
     sprintf(name, "process %d", pid);
-    pid = createProcess(name, 0, 0, 0);
+    pid = create(name, 0, 0, 0);
   }
 
   for (int i = 1; i < MAX_PROCESSES; i++)
-  {
-    pid = destroyProcess(i);
-  }
+    pid = terminate(i);
 
   free(processTable);
 
   return 0;
 }
 
-int createProcess(char *name, int ppid, int uid, unsigned char priority)
+int create(char *name, int ppid, int uid, unsigned char priority)
 {
   if (processTable[ppid] == NULL)
     return -1;
@@ -50,7 +48,7 @@ int createProcess(char *name, int ppid, int uid, unsigned char priority)
   return pid;
 }
 
-int destroyProcess(int pid)
+int terminate(int pid)
 {
   struct process *p = processTable[pid];
 

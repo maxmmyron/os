@@ -4,11 +4,9 @@
 struct PCB
 {
   char *name;
-
-  int pid;  // process ID
-  int ppid; // parent process ID
-  int uid;  // user ID of owner
-
+  int pid;                // process ID
+  int ppid;               // parent process ID
+  int uid;                // user ID of owner
   unsigned char priority; // process scheduler priority
   unsigned char status;   // process status
 };
@@ -20,7 +18,5 @@ struct process
   int *pageDirectory;
   int *stack;
 };
-
-int pdateProcess(struct process p);
 
 #endif

@@ -16,13 +16,13 @@ int main(int argc, char *argv[]);
  *
  * Returns the process ID of the new process.
  */
-int createProcess(char *name, int ppid, int uid, unsigned char priority);
+int create(char *name, int ppid, int uid, unsigned char priority);
 
 /**
  * Frees the memory allocated to the process and removes it from the process list.
  *
  * Returns the process ID of the destroyed process (i.e., the new free slot)
  */
-int destroyProcess(int pid);
+int terminate(int pid);
 
 #endif
