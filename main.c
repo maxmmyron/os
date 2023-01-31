@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
     pid = create(name, 0, 0, 0);
   }
 
+  // shutdown
+
   for (int i = 1; i < MAX_PROCESSES; i++)
     pid = terminate(i);
 
