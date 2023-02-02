@@ -3,12 +3,11 @@
 
 struct PCB
 {
-  char *name;
-  int pid;                // process ID
-  int ppid;               // parent process ID
-  int uid;                // user ID of owner
-  unsigned char priority; // process scheduler priority
-  unsigned char status;   // process status
+  char *name;  // process name
+  int pid;                          // process ID
+  int priority;                     // process priority
+  int status;                       // process status
+
 };
 
 struct process
