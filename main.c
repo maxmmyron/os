@@ -5,21 +5,22 @@
 
 int main(int argc, char *argv[])
 {
-  printf("hey");
+  // initialize process table
   processTable = malloc(sizeof(struct pcb *) * MAX_PROCESSES);
   for (int i = 0; i < MAX_PROCESSES; i++)
     processTable[i] = NULL;
 
+  // create processes
   pid = create("idle", 0, idle);
 
   pid = create("p1", 0, process1);
   pid = create("p2", 0, process2);
 
+  // run scheduler
   for (int i = 0; i < 10; i++)
     scheduleTS();
 
-  // shutdown
-
+  // terminate processes
   for (int i = 1; i < MAX_PROCESSES; i++)
     pid = terminate(i);
   free(processTable);
