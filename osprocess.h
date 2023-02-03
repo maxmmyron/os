@@ -1,21 +1,25 @@
 #ifndef _OS_PROCESS_H
 #define _OS_PROCESS_H
 
-struct PCB
+struct pcb
 {
-  char *name;  // process name
-  int pid;                          // process ID
-  int priority;                     // process priority
-  int status;                       // process status
-
+  char *name;            // process name
+  int pid;               // process ID
+  int priority;          // process priority
+  int status;            // process status
+  int (*function)(void); // process function
 };
 
-struct process
+int process1()
 {
-  struct PCB *pcb;
-  int *pageTable;
-  int *pageDirectory;
-  int *stack;
-};
+  printf("process 1\n");
+  return 0;
+}
+
+int process2()
+{
+  printf("process 2\n");
+  return 0;
+}
 
 #endif

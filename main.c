@@ -5,39 +5,39 @@
 
 int main(int argc, char *argv[])
 {
-  processTable = malloc(sizeof(struct process *) * MAX_PROCESSES);
+  printf("hey");
+  processTable = malloc(sizeof(struct pcb *) * MAX_PROCESSES);
   for (int i = 0; i < MAX_PROCESSES; i++)
     processTable[i] = NULL;
 
-  pid = create("idle", 0);
+  pid = create("idle", 0, idle);
 
-  for (int i = 1; i < MAX_PROCESSES; i++)
-  {
-    char *name = malloc(10);
-    sprintf(name, "process %d", pid);
-    pid = create(name, 0);
-  }
+  pid = create("p1", 0, process1);
+  pid = create("p2", 0, process2);
+
+  for (int i = 0; i < 10; i++)
+    scheduleTS();
 
   // shutdown
 
   for (int i = 1; i < MAX_PROCESSES; i++)
     pid = terminate(i);
-
   free(processTable);
 
   return 0;
 }
 
-int create(char *name, int priority)
+int create(char *name, int priority, void *function)
 {
   while (processTable[pid] != NULL)
     pid++;
 
-  struct process *p = malloc(sizeof(*p));
+  struct pcb *p = malloc(sizeof(*p));
 
-  p->pcb->name = name;
-  p->pcb->priority = priority;
-  p->pcb->status = 0;
+  p->name = name;
+  p->priority = priority;
+  p->status = 0;
+  p->function = function;
 
   processTable[pid] = p;
 
@@ -46,11 +46,33 @@ int create(char *name, int priority)
 
 int terminate(int pid)
 {
-  struct process *p = processTable[pid];
+  struct pcb *p = processTable[pid];
 
   free(p);
   p = NULL;
   processTable[pid] = NULL;
 
   return pid;
+}
+
+int idle()
+{
+  printf("idling...\n");
+  return 0;
+}
+
+int scheduleTS()
+{
+  int (*function)(void);
+  printf("--------------\n");
+  for (int i = 0; i < MAX_PROCESSES; i++)
+  {
+    if (processTable[i] != NULL)
+    {
+      function = processTable[i]->function;
+      function();
+    }
+  }
+
+  return 0;
 }

@@ -5,7 +5,7 @@
 #define MAX_PROCESSES 256
 
 // The process table, defined as an array of pointers to process control blocks.
-struct process **processTable;
+struct pcb **processTable;
 
 unsigned char pid = 0;
 
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]);
  *
  * Returns the process ID of the new process.
  */
-int create(char *name, int priority);
+int create(char *name, int priority, void *function);
 
 /**
  * Frees the memory allocated to the process and removes it from the process list.
@@ -24,5 +24,9 @@ int create(char *name, int priority);
  * Returns the process ID of the destroyed process (i.e., the new free slot)
  */
 int terminate(int pid);
+
+int idle();
+
+int scheduleTS();
 
 #endif
