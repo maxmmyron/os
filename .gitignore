@@ -1,2 +1,7 @@
 .vscode/
-a.exe
+*.bin
+*.o
+*.swp
+*.dis
+*.elf
+*.sym
