@@ -1,7 +1,7 @@
 #include "../drivers/screen.h"
 #include "util.h"
 
-void main() {
+void k_main() {
     // clear screen after boot process completes
     clear_screen();
 
