@@ -26,7 +26,7 @@ run: os-img.bin
 	qemu-system-i386 -fda os-img.bin
 
 debug: os-img.bin kernel.elf
-	qemu-system-i386 -fda os-img.bin &
+	qemu-system-i386 -s -fda os-img.bin &
 	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
 # generic rules for wildcards
