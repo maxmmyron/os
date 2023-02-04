@@ -10,12 +10,13 @@ GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
 # use debugging symbols in gcc
 CFLAGS = -g
 
-# default rule
+# default rule: concat the bootloader and kernel into a single os image
 os-img.bin: boot/boot.bin kernel.bin
 	cat $^ > os-img.bin
 
-# --oformat binary removes symbols that we dont need
+# build the kernel binary
 kernel.bin: boot/kernel_entry.o ${OBJ}
+# --oformat binary removes symbols that we dont need
 	i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # for debugging
@@ -39,6 +40,7 @@ debug: os-img.bin kernel.elf
 %.bin: %.asm
 	nasm $< -f bin -o $@
 
+# removes all build files from directories
 clean:
 	rm -rf *.bin *.dis *.o os-img.bin *.elf
-	rm-rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
+	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
