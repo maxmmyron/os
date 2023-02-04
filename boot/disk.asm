@@ -25,6 +25,10 @@ disk_load:
 disk_err:
   mov   bx, DISK_ERR
   call  print
+  call  print_nl
+
+  mov   dh, ah
+  call  print_hex
   jmp   disk_loop
 
 sectors_err:

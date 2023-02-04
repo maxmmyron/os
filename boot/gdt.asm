@@ -24,7 +24,7 @@ gdt_end:
 ; we can't directly load the GDT, so we define a gdt_descriptor that contains
 ; the size and address of the GDT. we then load the gdt using the lgdt operation
 gdt_descriptor:
-  dw gdt_end - gdt_start - 1    ; 16-bit size
+  dw gdt_end - gdt_start - 1    ; 16-bit size (one less than true size)
   dd gdt_start                  ; 32-bit address
 
 CODE_SEG equ gdt_code - gdt_start
