@@ -15,8 +15,8 @@ os-img.bin: boot/boot.bin kernel.bin
 	cat $^ > os-img.bin
 
 # build the kernel binary
-kernel.bin: boot/kernel_entry.o ${OBJ}
 # --oformat binary removes symbols that we dont need
+kernel.bin: boot/kernel_entry.o ${OBJ}
 	i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # for debugging
@@ -27,11 +27,11 @@ run: os-img.bin
 	qemu-system-i386 -fda os-img.bin
 
 debug: os-img.bin kernel.elf
-	qemu-system-i386 -s -fda os-img.bin &
+	qemu-system-i386 -S -s -fda os-img.bin &
 	${GDB} -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
 # generic rules for wildcards
-%.o: %.c ${HEADERS}
+%.o: %.c ${C_HEADERS}
 	${CC} ${CFLAGS} -ffreestanding -c $< -o $@
 
 %.o: %.asm
