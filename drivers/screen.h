@@ -1,0 +1,20 @@
+// define video address so we don't need to explicitly define it
+#define VIDEO_ADDRESS 0xb8000
+
+// screen size defs
+#define MAX_ROWS 25
+#define MAX_COLS 80
+
+// color defs
+#define WHITE_ON_BLACK 0x0f
+#define GREEN_ON_BLACK 0x02
+#define RED_ON_BLACK 0x04
+
+// screen I/O ports
+#define REG_SCREEN_CTRL 0x3d4
+#define REG_SCREEN_DATA 0x3d5
+
+// public kernel API
+void clear_screen();
+void k_print_at(char* message, int col, int row);
+void k_print(char* message);
