@@ -1,6 +1,6 @@
 #include "screen.h"
 #include "ports.h"
-#include "../kernel/util.h"
+#include "../clib/mem.h"
 
 // declare private functions
 int get_cursor_offset();
@@ -81,7 +81,7 @@ int print_char(char c, int col, int row, char attr) {
 
   // if coords are messed up, print error E
   if(col >= MAX_COLS || row >= MAX_ROWS) {
-    v_mem[2*(MAX_COLS)*(MAX_ROWS)-2] = "E";
+    v_mem[2*(MAX_COLS)*(MAX_ROWS)-2] = 'E';
     v_mem[2*(MAX_COLS)*(MAX_ROWS)-1] = RED_ON_BLACK;
 
     return get_offset(col, row);

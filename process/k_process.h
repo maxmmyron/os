@@ -1,5 +1,5 @@
-#ifndef _OS_PROCESS_H
-#define _OS_PROCESS_H
+#ifndef _K_PROCESS_H
+#define _K_PROCESS_H
 
 struct pcb
 {
@@ -10,16 +10,7 @@ struct pcb
   int (*function)(void); // process function
 };
 
-int process1()
-{
-  printf("process 1\n");
-  return 0;
-}
-
-int process2()
-{
-  printf("process 2\n");
-  return 0;
-}
+int process1();
+int process2();
 
 #endif

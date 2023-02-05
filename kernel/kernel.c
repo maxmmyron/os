@@ -1,5 +1,7 @@
+#include "kernel.h"
+#include "../process/k_process.h"
 #include "../drivers/screen.h"
-#include "util.h"
+#include "../clib/str.h"
 
 void k_main() {
     // clear screen after boot process completes

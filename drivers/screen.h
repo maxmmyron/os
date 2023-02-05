@@ -1,3 +1,6 @@
+#ifndef _K_SCREEN_H
+#define _K_SCREEN_H
+
 // define video address so we don't need to explicitly define it
 #define VIDEO_ADDRESS 0xb8000
 
@@ -18,3 +21,5 @@
 void clear_screen();
 void k_print_at(char* message, int col, int row);
 void k_print(char* message);
+
+#endif

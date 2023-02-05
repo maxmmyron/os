@@ -1,11 +1,3 @@
-// a simpler implementation of memcpy, renamed such that we don't encounter
-// possible namespace collisions
-void k_memcpy(char* source, char* dest, int nbytes) {
-  int i;
-  for (i = 0; i < nbytes; i++)
-    *(dest + i) = *(source + i);
-}
-
 // a K&R implementation of the itoa function, which converts an integer into
 // an ascii represntation
 void k_itoa(int n, char str[]) {
