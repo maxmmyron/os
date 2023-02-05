@@ -7,7 +7,7 @@ struct pcb **process_table;
 
 unsigned char pid = 0;
 
-void k_main();
+void kernel_main();
 
 int create(char *name, int priority, void *function);
 

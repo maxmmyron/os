@@ -1,6 +1,6 @@
-#ifndef _K_USTR_H
-#define _K_USTR_H
+#ifndef _UTIL_STR_H
+#define _UTIL_STR_H
 
-void k_itoa(int n, char str[]);
+void itoa(int n, char str[]);
 
 #endif

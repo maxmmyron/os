@@ -16,7 +16,7 @@ int get_offset_col(int offset);
 
 // prints a message on the screen at the specified location. If col or row are
 // negative, then we just use the current offset.
-void k_print_at(char* message, int col, int row) {
+void print_str_at(char* message, int col, int row) {
   int offset;
 
   if(col >= 0 && row >= 0) {
@@ -42,8 +42,8 @@ void k_print_at(char* message, int col, int row) {
 }
 
 // prints a message at the current cursor position.
-void k_print(char *message) {
-  k_print_at(message, -1, -1);
+void print_str(char *message) {
+  print_str_at(message, -1, -1);
 }
 
 void clear_screen() {
@@ -108,7 +108,7 @@ int print_char(char c, int col, int row, char attr) {
   if (offset >= MAX_ROWS * MAX_COLS * 2) {
     int i;
     for (i = 1; i < MAX_ROWS; i++)
-      k_memcpy(get_offset(0, i) + VIDEO_ADDRESS,
+      mcpy(get_offset(0, i) + VIDEO_ADDRESS,
         get_offset(0, i - 1) + VIDEO_ADDRESS,
         MAX_COLS * 2);
 

@@ -3,14 +3,16 @@
 ; into machine code, and we can make sure that main() is the first function
 ; called.
 
-[bits 32]       ; use 32-bit instructions, since by this point we've loaded into
-                ; protected mode.
-[extern k_main]  ; define the calling point as an external symbol. the linker
-                ; will substitute with the final address
+[bits 32]             ; use 32-bit instructions, since by this point we've
+                      ; loaded into protected mode.
+[extern kernel_main]  ; define the calling point as an external symbol. the
+                      ; linker will substitute with the final address
 
-call  k_main    ; invoke k_main() in the C kernel
-                ; the k_main label is resolved during link time. our [extern main]
-                ; line tells the linker we expect to find the k_main label in a
-                ; different object file (kernel.c())
+call  kernel_main     ; invoke kernel_main() in the C kernel
+                      ; the kernel_main label is resolved during link time. our
+                      ; [extern main] line tells the linker we expect to find
+                      ; the kernel_main label in a different object file
+                      ; (kernel.c())
 
-jmp   $         ; if we ever get back control from the kernel, we can just hang
+jmp   $               ; if we ever get back control from the kernel, we can
+                      ; just hang

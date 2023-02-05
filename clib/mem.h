@@ -1,6 +1,6 @@
-#ifndef _K_UMEM_H
-#define _K_UMEM_H
+#ifndef _UTIL_MEM_H
+#define _UTIL_MEM_H
 
-void k_memcpy(char* source, char* dest, int nbytes);
+void mcpy(char* source, char* dest, int nbytes);
 
 #endif

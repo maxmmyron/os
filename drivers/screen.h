@@ -19,7 +19,7 @@
 
 // public kernel API
 void clear_screen();
-void k_print_at(char* message, int col, int row);
-void k_print(char* message);
+void print_str_at(char* message, int col, int row);
+void print_str(char* message);
 
 #endif
