@@ -1,5 +1,5 @@
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
-C_HEADERS = $(wildcard kernel/*.h drivers/*.h)
+C_SOURCES = $(wildcard kernel/*.c drivers/*.c clib/*.c process/*.c)
+C_HEADERS = $(wildcard kernel/*.h drivers/*.h clib/*.h process/*.h)
 
 # syntax for file extension replacement
 OBJ = ${C_SOURCES:.c=.o}
@@ -43,4 +43,4 @@ debug: os-img.bin kernel.elf
 # removes all build files from directories
 clean:
 	rm -rf *.bin *.dis *.o os-img.bin *.elf
-	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o
+	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o process/*.o clib/*.o
