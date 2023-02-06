@@ -7,15 +7,15 @@
 
 void kernel_main() {
     // clear screen after boot process completes
-    // clear_screen();
+    clear_screen();
 
-    // // fill screen
-    // int i = 0;
-    // for(i = 0; i < 24; i++) {
-    //     char str[255];
-    //     itoa(i, str);
-    //     print_str_at(str, 0, i);
-    // }
+    // fill screen
+    int i = 0;
+    for(i = 0; i < 24; i++) {
+        char str[255];
+        itoa(i, str);
+        print_str_at(str, 0, i);
+    }
 
     isr_install();
     /* Test the interrupts */
