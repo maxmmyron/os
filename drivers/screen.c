@@ -1,6 +1,6 @@
 #include "screen.h"
-#include "ports.h"
-#include "../clib/mem.h"
+#include "../cpu/ports.h"
+#include "../libc/mem.h"
 
 // declare private functions
 int get_cursor_offset();
@@ -50,7 +50,7 @@ void clear_screen() {
   int screen_size = MAX_COLS * MAX_ROWS;
   int i;
 
-  char *v_mem = VIDEO_ADDRESS;
+  u8 *v_mem = (u8*) VIDEO_ADDRESS;
 
   // for every space on screen, set to black (i.e. white space character w/
   // black background)
@@ -61,6 +61,14 @@ void clear_screen() {
 
   // set cursor offset to (0, 0)
   set_cursor_offset(get_offset(0, 0));
+}
+
+void print_backspace() {
+  int offset = get_cursor_offset() - 2;
+  int row = get_offset_row(offset);
+  int col = get_offset_col(offset);
+
+  print_char(0x08, col, row, WHITE_ON_BLACK);
 }
 
 // --------------------------------------
@@ -74,7 +82,7 @@ void clear_screen() {
 // returns the offset of the next character, and sets the video cursor to the
 // returned offset.
 int print_char(char c, int col, int row, char attr) {
-  unsigned char* v_mem = (unsigned char*) VIDEO_ADDRESS;
+  u8* v_mem = (u8*) VIDEO_ADDRESS;
 
   // preset attr if not set to anything
   if (!attr) attr = WHITE_ON_BLACK;
@@ -96,11 +104,16 @@ int print_char(char c, int col, int row, char attr) {
     // handle new line, move to next row and reset col position
     row = get_offset_row(offset);
     offset = get_offset(0, row+1);
+  } else if (c == 0x08) {
+    // case: backspace
+    v_mem[offset] = ' ';
+    v_mem[offset + 1] = attr;
+
   } else {
     // once everything is validated and handled, set video memory at offset to
     // character and attribute data
     v_mem[offset] = c;
-    v_mem[offset+1] = attr;
+    v_mem[offset + 1] = attr;
     // move forward by 2 spaces in offset
     offset += 2;
   }
@@ -108,12 +121,12 @@ int print_char(char c, int col, int row, char attr) {
   if (offset >= MAX_ROWS * MAX_COLS * 2) {
     int i;
     for (i = 1; i < MAX_ROWS; i++)
-      mcpy(get_offset(0, i) + VIDEO_ADDRESS,
-        get_offset(0, i - 1) + VIDEO_ADDRESS,
+      mcpy((u8*)get_offset(0, i) + VIDEO_ADDRESS,
+        (u8*)get_offset(0, i - 1) + VIDEO_ADDRESS,
         MAX_COLS * 2);
 
     // add a blank last line to remove previous last line
-    char *ll = get_offset(0, MAX_ROWS - 1) + VIDEO_ADDRESS;
+    char *ll = (char*)get_offset(0, MAX_ROWS - 1) + VIDEO_ADDRESS;
     // clear each column from last row
     for (i = 0; i < MAX_COLS * 2; i++) ll[i] = 0;
 

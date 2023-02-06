@@ -5,9 +5,11 @@
 
 struct pcb **process_table;
 
-unsigned char pid = 0;
+//unsigned char pid = 0;
 
 void kernel_main();
+
+void user_input(char *input);
 
 int create(char *name, int priority, void *function);
 

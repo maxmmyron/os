@@ -3,7 +3,7 @@
 
 #include "../cpu/types.h"
 
-void mcpy(char* source, char* dest, int nbytes);
+void mcpy(u8 *source, u8 *dest, int nbytes);
 void mset(u8 *dest, u8 val, u32 len);
 
 #endif

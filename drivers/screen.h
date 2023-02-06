@@ -1,6 +1,8 @@
 #ifndef _K_SCREEN_H
 #define _K_SCREEN_H
 
+#include "../cpu/types.h"
+
 // define video address so we don't need to explicitly define it
 #define VIDEO_ADDRESS 0xb8000
 
@@ -21,5 +23,6 @@
 void clear_screen();
 void print_str_at(char* message, int col, int row);
 void print_str(char* message);
+void print_backspace();
 
 #endif

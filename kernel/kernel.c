@@ -1,24 +1,24 @@
-// #include "kernel.h"
-// #include "../process/k_process.h"
-#include "../drivers/screen.h"
-// #include "../clib/str.h"
-#include "../cpu/isr.h"
+#include "kernel.h"
+#include "../libc/str.h"
 #include "../cpu/idt.h"
+#include "../cpu/isr.h"
+#include "../cpu/timer.h"
+#include "../drivers/keyboard.h"
+#include "../drivers/screen.h"
+
 
 void kernel_main() {
-    // clear screen after boot process completes
-    clear_screen();
+  isr_install();
+  irq_install();
+}
 
-    // fill screen
-    int i = 0;
-    for(i = 0; i < 24; i++) {
-        char str[255];
-        itoa(i, str);
-        print_str_at(str, 0, i);
-    }
+void user_input(char* input) {
+  if(strcmp(input, "END") == 0) {
+    print_str("shutdown\n");
+    asm volatile("hlt");
+  }
 
-    isr_install();
-    /* Test the interrupts */
-    __asm__ __volatile__("int $2");
-    __asm__ __volatile__("int $3");
+  print_str("command: ");
+  print_str(input);
+  print_str("\n> ");
 }

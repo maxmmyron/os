@@ -1,5 +1,5 @@
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c clib/*.c process/*.c cpu/*.c)
-C_HEADERS = $(wildcard kernel/*.h drivers/*.h clib/*.h process/*.h cpu/*.h)
+C_SOURCES = $(wildcard kernel/*.c drivers/*.c libc/*.c process/*.c cpu/*.c)
+C_HEADERS = $(wildcard kernel/*.h drivers/*.h libc/*.h process/*.h cpu/*.h)
 
 # syntax for file extension replacement
 OBJ = ${C_SOURCES:.c=.o cpu/interrupt.o}
@@ -8,7 +8,8 @@ CC = /usr/local/i386elfgcc/bin/i386-elf-gcc
 GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
 
 # use debugging symbols in gcc
-CFLAGS = -g
+CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
+					-nostartfiles -nodefaultlibs -Wall -Wextra -Werror
 
 # default rule: concat the bootloader and kernel into a single os image
 os-img.bin: boot/boot.bin kernel.bin
@@ -43,4 +44,4 @@ debug: os-img.bin kernel.elf
 # removes all build files from directories
 clean:
 	rm -rf *.bin *.dis *.o os-img.bin *.elf
-	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o process/*.o clib/*.o cpu/*.o
+	rm -rf kernel/*.o boot/*.bin drivers/*.o boot/*.o process/*.o libc/*.o cpu/*.o
