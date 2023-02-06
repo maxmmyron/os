@@ -19,8 +19,8 @@ format_hex:
                           ; this is all we need to do)
   cmp   al, 0x39          ; if al register > 0x39, then we know it's A-F case.
   jle   format_hex_2      ;
-  add   al, 7             ; because A is at ASCII 65 (instead of 58), add 7 to account
-                          ; for offset
+  add   al, 7             ; because A is at ASCII 65 (instead of 58), add 7 to
+                          ; account for offset
 
 ; gets the correct position of the string, at whcih we are placing our newly
 ; formatted ASCII character

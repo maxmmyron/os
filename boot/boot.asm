@@ -38,8 +38,8 @@ load_kernel:
 
 [bits 32]
 begin_pm:
-  mov   ebx, msg_ld_prot  ; move 32-bit protected message to extended bx register
-                          ; (since that is 32 bits wide)
+  mov   ebx, msg_ld_prot  ; move 32-bit protected message to extended bx
+                          ; register (since that is 32 bits wide)
   call  pstr_pm
   call  KERNEL_OFFSET     ; give control to kernel
   jmp   $                 ; once control returned from kernel, loop
