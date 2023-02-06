@@ -21,15 +21,20 @@ void user_input(char* input) {
     asm volatile("hlt");
   }
 
+  if(strcmp(input, "TPANIC") == 0) {
+    // test panic
+    asm volatile("int $3");
+  }
+
   print_str("command: ");
   print_str(input);
   print_str("\n> ");
 }
 
 // panics when interrupt received
-void panic(char* exception_message) {
+void kernel_panic(char* exception_message) {
   clear_screen();
-  print_str("oh fuck\n");
+  print_str("panic\n");
   print_str(exception_message);
   asm volatile("hlt");
 }
