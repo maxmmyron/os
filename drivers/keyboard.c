@@ -35,14 +35,14 @@ static void keyboard_callback(registers_t regs) {
     backspace(key_buffer);
     print_backspace();
   } else if(scancode == ENTER) {
-    print_str("\n");
+    print("\n");
     user_input(key_buffer); // kernel-controlled function
     key_buffer[0] = '\0';
   } else {
     char letter = sc_ascii[(int)scancode];
     char str[2] = {letter, '\0'};
     append(key_buffer, letter);
-    print_str(str);
+    print(str);
   }
   UNUSED(regs);
 }

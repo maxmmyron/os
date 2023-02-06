@@ -8,8 +8,9 @@
 
 
 void kernel_main() {
+  set_screen_attr(WHITE_ON_BLACK);
   clear_screen();
-  print_str("> ");
+  print("> ");
 
   isr_install();
   irq_install();
@@ -17,7 +18,7 @@ void kernel_main() {
 
 void user_input(char* input) {
   if(strcmp(input, "END") == 0) {
-    print_str("shutdown\n");
+    print("shutdown\n");
     asm volatile("hlt");
   }
 
@@ -26,15 +27,17 @@ void user_input(char* input) {
     asm volatile("int $3");
   }
 
-  print_str("command: ");
-  print_str(input);
-  print_str("\n> ");
+  print("command: ");
+  print(input);
+  print("\n> ");
 }
 
 // panics when interrupt received
 void kernel_panic(char* exception_message) {
+  set_screen_attr(BLACK_ON_RED);
   clear_screen();
-  print_str("panic\n");
-  print_str(exception_message);
+  print("panic!\n");
+  print("exception message: ");
+  print(exception_message);
   asm volatile("hlt");
 }

@@ -16,7 +16,7 @@ int get_offset_col(int offset);
 
 // prints a message on the screen at the specified location. If col or row are
 // negative, then we just use the current offset.
-void print_str_at(char* message, int col, int row) {
+void print_at(char* message, int col, int row) {
   int offset;
 
   if(col >= 0 && row >= 0) {
@@ -32,7 +32,7 @@ void print_str_at(char* message, int col, int row) {
   // loop through the message, char by char, and print it to the screen
   int i = 0;
   while (message[i] != 0) {
-    offset = print_char(message[i++], col, row, WHITE_ON_BLACK);
+    offset = print_char(message[i++], col, row, attr);
 
     // given the new offset returned from print_char, compute the new position
     // for the next iterations
@@ -42,8 +42,8 @@ void print_str_at(char* message, int col, int row) {
 }
 
 // prints a message at the current cursor position.
-void print_str(char *message) {
-  print_str_at(message, -1, -1);
+void print(char *message) {
+  print_at(message, -1, -1);
 }
 
 void clear_screen() {
@@ -56,7 +56,7 @@ void clear_screen() {
   // black background)
   for(i = 0; i < screen_size; i++) {
     v_mem[i * 2] = ' ';
-    v_mem[i * 2 + 1] = WHITE_ON_BLACK;
+    v_mem[i * 2 + 1] = attr;
   }
 
   // set cursor offset to (0, 0)
@@ -68,7 +68,11 @@ void print_backspace() {
   int row = get_offset_row(offset);
   int col = get_offset_col(offset);
 
-  print_char(0x08, col, row, WHITE_ON_BLACK);
+  print_char(0x08, col, row, attr);
+}
+
+void set_screen_attr(char screen_attr) {
+  attr = screen_attr;
 }
 
 // --------------------------------------
@@ -85,12 +89,12 @@ int print_char(char c, int col, int row, char attr) {
   u8* v_mem = (u8*) VIDEO_ADDRESS;
 
   // preset attr if not set to anything
-  if (!attr) attr = WHITE_ON_BLACK;
+  if (!attr) set_screen_attr(WHITE_ON_BLACK);
 
   // if coords are messed up, print error E
   if(col >= MAX_COLS || row >= MAX_ROWS) {
     v_mem[2*(MAX_COLS)*(MAX_ROWS)-2] = 'E';
-    v_mem[2*(MAX_COLS)*(MAX_ROWS)-1] = RED_ON_BLACK;
+    v_mem[2*(MAX_COLS)*(MAX_ROWS)-1] = BLACK_ON_RED;
 
     return get_offset(col, row);
   }
