@@ -8,6 +8,9 @@
 
 
 void kernel_main() {
+  clear_screen();
+  print_str("> ");
+
   isr_install();
   irq_install();
 }
