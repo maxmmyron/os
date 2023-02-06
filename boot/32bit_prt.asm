@@ -1,6 +1,7 @@
 [bits 32]
 
-VIDEO_MEMORY  equ 0xb8000
+VIDEO_MEMORY  equ 0xb8000 ; in text mode, video memory starts specifically at
+                          ; 0xb8000
 WOB           equ 0x0f
 
 pstr_pm:
