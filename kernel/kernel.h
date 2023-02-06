@@ -11,6 +11,8 @@ void kernel_main();
 
 void user_input(char *input);
 
+void kernel_panic(char* exception_message);
+
 int create(char *name, int priority, void *function);
 
 int terminate(int pid);

@@ -25,3 +25,11 @@ void user_input(char* input) {
   print_str(input);
   print_str("\n> ");
 }
+
+// panics when interrupt received
+void panic(char* exception_message) {
+  clear_screen();
+  print_str("oh fuck\n");
+  print_str(exception_message);
+  asm volatile("hlt");
+}
