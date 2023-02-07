@@ -6,6 +6,7 @@
 #include "../drivers/keyboard.h"
 #include "../drivers/screen.h"
 #include "../libc/mem.h"
+#include "../libc/function.h"
 
 int proc() {
   print("process running...\n");
@@ -81,11 +82,4 @@ void user_input(char* input) {
 }
 
 // panics when interrupt received
-void kernel_panic(char* exception_message) {
-  set_screen_attr(BLACK_ON_RED);
-  clear_screen();
-  print("panic!\n");
-  print("exception message: ");
-  print(exception_message);
-  asm volatile("hlt");
-}
+

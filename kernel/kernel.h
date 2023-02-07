@@ -13,6 +13,5 @@ struct pcb **process_table; // The process table. we define this as a pointer
 
 void kernel_main();
 void user_input(char *input);
-void kernel_panic(char *exception_message);
 
 #endif

@@ -5,4 +5,6 @@
 // parameter compiler warning)
 #define UNUSED(x) (void)(x)
 
+void panic(char* exception_message);
+
 #endif

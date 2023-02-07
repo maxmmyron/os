@@ -120,7 +120,7 @@ char *exception_messages[] = {
 };
 
 void isr_handler(registers_t r) {
-  kernel_panic(exception_messages[r.int_no]);
+  panic(exception_messages[r.int_no]);
 }
 
 void register_interrupt_handler(u8 n, isr_t handler) {
