@@ -8,8 +8,8 @@ CC = /usr/local/i386elfgcc/bin/i386-elf-gcc
 GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
 
 # use debugging symbols in gcc
-CFLAGS = -g -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-					-nostartfiles -nodefaultlibs -Wall -Wextra -Werror
+CFLAGS = -g -m32 -nostdlib -fno-builtin -fno-stack-protector \
+					-nostartfiles -nodefaultlibs -Wall -Wextra -Werror -lgcc
 
 # default rule: concat the bootloader and kernel into a single os image
 os-img.bin: boot/boot.bin kernel.bin
