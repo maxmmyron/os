@@ -11,7 +11,7 @@ void mcpy(u8 *source, u8 *dest, int nbytes) {
     *(dest + i) = *(source + i);
 }
 
-void mset(u8 *dest, u8 val, u32 len) {
+void mset(void *dest, u8 val, u32 len) {
     u8 *temp = (u8 *)dest;
     for ( ; len != 0; len--) *temp++ = val;
 }
