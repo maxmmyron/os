@@ -1,7 +1,7 @@
 #ifndef _K_PORTS_H
 #define _K_PORTS_H
 
-#include "types.h"
+#include "type.h"
 
 u8 port_byte_in (u16 port);
 void port_byte_out (u16 port, u8 data);

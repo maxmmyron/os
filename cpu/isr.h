@@ -11,7 +11,7 @@
 #define PIC_SLAVE_DATA      (PIC_SLAVE_COMMAND + 1)
 
 
-#include "types.h"
+#include "type.h"
 
 // define extern directives that allow us to access the addresses of each ISR
 // handler

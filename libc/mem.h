@@ -1,7 +1,7 @@
 #ifndef _UTIL_MEM_H
 #define _UTIL_MEM_H
 
-#include "../cpu/types.h"
+#include "../cpu/type.h"
 
 void mcpy(u8 *source, u8 *dest, int nbytes);
 void mset(u8 *dest, u8 val, u32 len);

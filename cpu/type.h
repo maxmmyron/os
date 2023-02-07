@@ -1,5 +1,5 @@
-#ifndef _TYPES_H
-#define _TYPES_H
+#ifndef _TYPE_H
+#define _TYPE_H
 
 // define custom types with no semantic meaning so we have a better grasp on
 // allocating non-character bytes.

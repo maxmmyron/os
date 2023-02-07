@@ -1,7 +1,7 @@
 #ifndef _PROCESS_H
 #define _PROCESS_H
 
-#include "../cpu/types.h"
+#include "../cpu/type.h"
 
 struct pcb
 {

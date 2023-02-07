@@ -2,7 +2,7 @@
 #define _KERNEL_H
 
 #include "process.h"
-#include "../cpu/types.h"
+#include "../cpu/type.h"
 
 #define MAX_PROCESSES 256
 

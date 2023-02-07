@@ -5,7 +5,7 @@
 #ifndef _IDT_H
 #define _IDT_H
 
-#include "types.h"
+#include "type.h"
 
 // segment selectors
 #define KERNEL_CS 0x08

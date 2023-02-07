@@ -1,7 +1,7 @@
 #ifndef _K_SCREEN_H
 #define _K_SCREEN_H
 
-#include "../cpu/types.h"
+#include "../cpu/type.h"
 
 // define video address so we don't need to explicitly define it
 // this video address is for text mode
