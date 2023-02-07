@@ -28,7 +28,7 @@ i assume its a lot easier given the patchwork necessary on windows thru wsl.
 3. `make run`
 4. to clean .o and .bin files, run `make clean`
 
-## adknowledgements
+## acknowledgements
 primary kernel code is my own implementation of primary operating system processes as learned.
 bootloader is an adaptation of several sources:
 - [Writing a Simple Operating System — from Scratch](https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf)  by Nick Blundell
