@@ -1,6 +1,8 @@
 [org 0x7c00]
 KERNEL_OFFSET equ 0x1000  ; same value we used when linking kernel
 
+section .text
+_start:
 mov   [boot_drive], dl    ; BIOS sets boot drive in dl on boot
 mov   bp, 0x9000          ; set up stack
 mov   sp, bp
@@ -11,7 +13,10 @@ call  print_nl
 
 call  load_kernel         ; load kernel from disk
 call  switch_pm           ; disable interrupts, load GDT, jump to begin_pm
-jmp   $                   ; this is never executed
+.hang:
+  hlt
+  jmp .hang
+.end:
 
 ; 16 bit includes
 %include "boot/prt_str.asm"
