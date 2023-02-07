@@ -3,14 +3,15 @@
 
 #include "../cpu/type.h"
 
-void mcpy(u8 *source, u8 *dest, int nbytes);
-void mset(void *dest, u8 val, u32 len);
+void mcpy(u32 *source, u32 *dest, int nbytes);
+void mcpy8(u8 *source, u8 *dest, int nbytes);
+void mset(u32 *dest, u32 val, u32 len);
 
-// vanilla malloc functions. return a virtual address pointer
-void *malloc(u32 size);
-void *malloc_a(u32 size);                   // page-aligned
-// malloc functions that return a physical address pointer
-void *malloc_p(u32 size, u32 *phys_addr);
-void *malloc_ap(u32 size, u32 *phys_addr);  // page-aligned
+u32 malloc_internal(u32 size, int align, u32 *phys_addr);
+
+#define malloc(size) malloc_internal(size, 0, 0);
+#define malloc_a(size) malloc_internal(size, 1, 0);
+#define malloc_p(size, phys_addr) malloc_internal(size, 0, phys_addr);
+#define malloc_ap(size, phys_addr) malloc_internal(size, 1, phys_addr);
 
 #endif

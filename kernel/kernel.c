@@ -7,7 +7,6 @@
 #include "../drivers/screen.h"
 #include "../libc/mem.h"
 #include "../libc/function.h"
-#include "../paging.h"
 
 int proc() {
   print("process running...\n");
@@ -22,9 +21,7 @@ void kernel_main() {
   isr_install();
   irq_install();
 
-  paging_install();
-
-  process_table = malloc(sizeof(struct pcb*) * MAX_PROCESSES);
+  process_table = (void*) malloc(sizeof(struct pcb*) * MAX_PROCESSES);
   // we allocate 256 * pcb pointer size (~1024 bytes) towards process table
 
   char str[32];
@@ -44,7 +41,7 @@ void kernel_main() {
     process_table[i] = 0x00;  // init each value to null value
 
   // set up process
-  struct pcb *p = malloc(sizeof(*p));
+  struct pcb *p = (void*) malloc(sizeof(*p));
 
   itoa((int)p, str);
   print("pcb malloc'd at mem addr: ");
