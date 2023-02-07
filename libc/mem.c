@@ -27,3 +27,7 @@ void *malloc_aligned(u32 size, int align) {
                           // of malloc'd memory
   return ptr;
 }
+
+u32 get_real_addr() {
+  return free_mem_addr;
+}
