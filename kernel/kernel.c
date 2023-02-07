@@ -5,7 +5,12 @@
 #include "../cpu/timer.h"
 #include "../drivers/keyboard.h"
 #include "../drivers/screen.h"
+#include "../libc/mem.h"
 
+int proc() {
+  print("process running...\n");
+  return 0;
+}
 
 void kernel_main() {
   set_screen_attr(WHITE_ON_BLACK);
@@ -14,6 +19,25 @@ void kernel_main() {
 
   isr_install();
   irq_install();
+
+  process_table = (void*)malloc(sizeof(struct pcb*) * MAX_PROCESSES, 1, &malloc_addr);
+  // we allocate 256 * pcb pointer size (~1024 bytes) towards process table
+
+  int i = 0;
+  for(i = 0; i < MAX_PROCESSES; i++)
+    process_table[i] = 0x00;  // init each value to null value
+
+  // set up process
+  struct pcb *p = (void*)malloc(sizeof(*p), 1, &malloc_addr);
+
+  p->name = "Process";
+  p->function = proc;
+
+  process_table[0] = p;
+
+  print(process_table[0]->name);
+  print("\n");
+  process_table[0]->function();
 }
 
 void user_input(char* input) {

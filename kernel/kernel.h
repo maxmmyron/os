@@ -1,24 +1,18 @@
 #ifndef _KERNEL_H
 #define _KERNEL_H
 
+#include "process.h"
+#include "../cpu/types.h"
+
 #define MAX_PROCESSES 256
 
-struct pcb **process_table;
+u32 malloc_addr; // use a base address from which we can align our malloc calls
 
-//unsigned char pid = 0;
+struct pcb **process_table; // The process table. we define this as a pointer
+                            // to a dynamically allocated array of pcb pointers
 
 void kernel_main();
-
 void user_input(char *input);
-
-void kernel_panic(char* exception_message);
-
-int create(char *name, int priority, void *function);
-
-int terminate(int pid);
-
-int idle();
-
-int schedule_processes();
+void kernel_panic(char *exception_message);
 
 #endif
