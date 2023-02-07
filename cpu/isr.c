@@ -82,25 +82,25 @@ void isr_install() {
 
 // exception messages mapped to each exception
 char *exception_messages[] = {
-  "Division By Zero",
+  "Division By Zero",             // 0
   "Debug",
   "Non Maskable Interrupt",
   "Breakpoint",
-  "Into Detected Overflow",
+  "Into Detected Overflow",       // 4
   "Out of Bounds",
   "Invalid Opcode",
   "No Coprocessor",
 
-  "Double Fault",
+  "Double Fault",                 // 8
   "Coprocessor Segment Overrun",
   "Bad TSS",
   "Segment Not Present",
-  "Stack Fault",
+  "Stack Fault",                  // 12
   "General Protection Fault",
   "Page Fault",
   "Unknown Interrupt",
 
-  "Coprocessor Fault",
+  "Coprocessor Fault",            // 16
   "Alignment Check",
   "Machine Check",
   "Reserved",
