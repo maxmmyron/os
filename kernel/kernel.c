@@ -55,6 +55,13 @@ void kernel_main() {
   print(process_table[0]->name);
   print("\n");
   process_table[0]->function();
+
+  print_at("+", 0, 14);
+  print_at("+", 79, 14);
+  print_at("|", 0, 15);
+  print_at("|", 79, 15);
+  print_at("+", 0, 16);
+  print_at("+", 79, 16);
 }
 
 void user_input(char* input) {
