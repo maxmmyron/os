@@ -15,16 +15,15 @@ void mset(u8 *dest, u8 val, u32 len) {
 
 u32 free_mem_addr = 0x10000;
 
-u32 malloc(u32 size, int align, u32 *physical_addr) {
+void *malloc_aligned(u32 size, int align) {
   // if pages are aligned to 4k (0x1000)
   if(align == 1 && (free_mem_addr & 0xfffff000)) {
     free_mem_addr &= 0xfffff000;
     free_mem_addr += 0x1000;
   }
 
-  if(physical_addr) *physical_addr = free_mem_addr;
-
-  u32 ret = free_mem_addr;
-  free_mem_addr += size;  // increment pointer
-  return ret;
+  void *ptr = (void*)free_mem_addr;
+  free_mem_addr += size;  // increment pointer to next free space based on size
+                          // of malloc'd memory
+  return ptr;
 }

@@ -20,15 +20,32 @@ void kernel_main() {
   isr_install();
   irq_install();
 
-  process_table = (void*)malloc(sizeof(struct pcb*) * MAX_PROCESSES, 1, &malloc_addr);
+  process_table = malloc(sizeof(struct pcb*) * MAX_PROCESSES);
   // we allocate 256 * pcb pointer size (~1024 bytes) towards process table
+
+  char str[32];
+  itoa((int)process_table, str);
+  print("process_table malloc'd at mem addr: ");
+  print(str);
+  print("\n");
+
+
+  itoa(sizeof(struct pcb*) * MAX_PROCESSES, str);
+  print("sz malloc'd: ");
+  print(str);
+  print("\n");
 
   int i = 0;
   for(i = 0; i < MAX_PROCESSES; i++)
     process_table[i] = 0x00;  // init each value to null value
 
   // set up process
-  struct pcb *p = (void*)malloc(sizeof(*p), 1, &malloc_addr);
+  struct pcb *p = malloc(sizeof(*p));
+
+  itoa((int)p, str);
+  print("pcb malloc'd at mem addr: ");
+  print(str);
+  print("\n");
 
   p->name = "Process";
   p->function = proc;
