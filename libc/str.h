@@ -2,6 +2,7 @@
 #define _UTIL_STR_H
 
 void itoa(int n, char str[]);
+void htoa(int n, char str[]);
 void reverse(char s[]);
 int strlen(char s[]);
 void backspace(char s[]);
