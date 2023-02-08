@@ -1,6 +1,11 @@
 [bits 16]
 switch_pm:
   cli                     ; disable interrupts
+
+  mov   ah, 0x00          ; set ah register to 00 for VGA mode
+  mov   al, 0x13          ; set al register to 13 for 320x200 256 color graphics
+  int   10h               ; call bios 10h interrupt to set vga mode
+
   lgdt  [gdt_descriptor]  ; load GDT descriptor
                           ; we want to change the last bit of cr0 (the control
                           ; register) to 1, to change the CPU from real mode to
@@ -9,7 +14,8 @@ switch_pm:
   mov   eax, cr0          ; 1.  copy the register into a 32-bit general-purpose
                           ;     register
   or    eax, 0x1          ; 2.  change the last bit to 1
-  mov   cr0, eax          ; 3.  copy the result back into cr0.
+  mov   cr0, eax          ; 3.  copy the result back into cr0
+
   jmp   CODE_SEG:init_pm  ; perform a far-jump, which is a jump into a different
                           ; segment. we need to specify an actual segment for
                           ; a far jump which is the purpose of the "CODE_SEG"
