@@ -5,7 +5,8 @@
 
 // define video address so we don't need to explicitly define it
 // this video address is for text mode
-#define VIDEO_ADDRESS 0xb8000
+#define VIDEO_ADDRESS 0xA0000
+// #define VIDEO_ADDRESS 0xb8000
 
 // screen size defs
 #define MAX_ROWS 25
