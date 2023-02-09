@@ -10,6 +10,8 @@ int get_offset(int col, int row);
 int get_offset_row(int offset);
 int get_offset_col(int offset);
 
+// https://upload.wikimedia.org/wikipedia/commons/6/66/VGA_palette_with_black_borders.svg
+
 // --------------------------------------
 // public kernel API
 // --------------------------------------
