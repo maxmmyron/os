@@ -2,9 +2,12 @@
 switch_pm:
   cli                     ; disable interrupts
 
-  mov   ah, 0x00          ; set ah register to 00 for VGA mode
-  mov   al, 0x13          ; set al register to 13 for 320x200 256 color graphics
-  int   10h               ; call bios 10h interrupt to set vga mode
+  ; commenting this out for now; after i get a filesystem working i may
+  ; reimplement this with custom font. I don't really like the idea of loading
+  ; a font in through an array :/
+  ; mov   ah, 0x00          ; set ah register to 00 for VGA mode
+  ; mov   al, 0x13          ; set al register to 13 for 320x200 256 color graphics
+  ; int   10h               ; call bios 10h interrupt to set vga mode
 
   lgdt  [gdt_descriptor]  ; load GDT descriptor
                           ; we want to change the last bit of cr0 (the control
