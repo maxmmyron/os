@@ -89,7 +89,6 @@ int create_process(char* name, int(*function)(void)) {
 }
 
 void user_input(char* input) {
-
   if(strcmp(input, "END") == 0) {
     print("shutdown\n");
     asm volatile("hlt");
