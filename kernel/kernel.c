@@ -31,55 +31,18 @@ void kernel_main() {
   isr_install();
   irq_install();
 
-  init_timer(50);
+  pid = 0;
 
-  // pid = 0;
+  process_table = (void*) malloc(sizeof(struct pcb*) * MAX_PROCESSES);
 
-  // process_table = (void*) malloc(sizeof(struct pcb*) * MAX_PROCESSES);
+  int i = 0;
+  for(i = 0; i < MAX_PROCESSES; i++)
+    process_table[i] = 0x00;  // init each value to null value
 
-  // int i = 0;
-  // for(i = 0; i < MAX_PROCESSES; i++)
-  //   process_table[i] = 0x00;  // init each value to null value
+  create_process("process 1", process1);
+  create_process("process 2", process2);
 
-  // create_process("process 1", process1);
-  // create_process("process 2", process2);
-
-
-
-
-
-  // we allocate 256 * pcb pointer size (~1024 bytes) towards process table
-
-  // char str[32];
-  // itoa((int)process_table, str);
-  // print("process_table malloc'd at mem addr: ");
-  // print(str);
-  // print("\n");
-
-
-  // itoa(sizeof(struct pcb*) * MAX_PROCESSES, str);
-  // print("sz malloc'd: ");
-  // print(str);
-  // print("\n");
-
-  // set up process
-
-
-  // itoa((int)p, str);
-  // print("pcb malloc'd at mem addr: ");
-  // print(str);
-  // print("\n");
-
-  // p->name = "Process";
-  // p->function = proc;
-
-  // process_table[0] = p;
-
-  // print(process_table[0]->name);
-  // print("\n");
-  // process_table[0]->function();
-
-  // draw_process_table();
+  add_timer_callback(draw_process_table);
 }
 
 void draw_process_table()
@@ -126,6 +89,7 @@ int create_process(char* name, int(*function)(void)) {
 }
 
 void user_input(char* input) {
+
   if(strcmp(input, "END") == 0) {
     print("shutdown\n");
     asm volatile("hlt");
