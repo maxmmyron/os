@@ -3,11 +3,14 @@
 #include "ports.h"
 #include "../libc/function.h"
 
-typedef void (*callback)(void);
+// create a new array containg void ptrs to functions with an unsigned int param
+// the unsigned int param is the current tick, passed from timer.c into the func
+typedef void (*callback)(unsigned int);
 callback callbacks[16];
 
 u32 tick = 0;
-// running tally of callbacks added
+
+// keep a running tally of callbacks added
 unsigned char callback_count = 0;
 
 static void timer_callback(registers_t regs) {
@@ -15,13 +18,13 @@ static void timer_callback(registers_t regs) {
 
   int i = 0;
   for(i = 0; i < callback_count; i++) {
-    if(callbacks[i] != 0x00) callbacks[i]();
+    if(callbacks[i] != 0x00) callbacks[i](tick);
   }
 
   UNUSED(regs);
 }
 
-int add_timer_callback(void (*callback)(void)) {
+int add_timer_callback(void (*callback)(unsigned int)) {
   if(callback_count == 16) return 0;
   callbacks[callback_count++] = callback;
   return 1;
