@@ -20,8 +20,9 @@ int process2() {
 }
 
 // internal functions
-void draw_process_table();
+void draw_process_table(unsigned int tick);
 int create_process(char* name, int(*function)(void));
+void pause_process(unsigned int tick);
 
 void kernel_main() {
   set_screen_attr(WHITE_ON_BLACK);
@@ -43,12 +44,18 @@ void kernel_main() {
   create_process("process 2", process2);
 
   add_timer_callback(draw_process_table);
+  add_timer_callback(pause_process);
 }
 
-void draw_process_table()
+void draw_process_table(unsigned int tick)
 {
   clear_screen();
   int i;
+
+  char tick_str[32];
+  itoa(tick, tick_str);
+  print(tick_str);
+  print("\n");
   for(i = 0; i < 256; i++) {
     if(process_table[i] == 0x00) continue;
 
@@ -61,13 +68,33 @@ void draw_process_table()
     print(istr);
     print(":  ");
 
+
     print(process->name);
     print("   ");
+
+    char sstr[3];
+    itoa(process->status, sstr);
+    print(sstr);
+    print("   ");
+
+    // guard clause in case process status isn't run state
+    if(process->status != 0) continue;
 
     int f_ret = process->function();
     char fstr[10];
     itoa(f_ret, fstr);
     print(fstr);
+  }
+}
+
+void pause_process(unsigned int tick) {
+  // pause after 5 seconds
+  if(tick > 250) {
+    process_table[0]->status = 1;
+  }
+  // unpause after another 5
+  if(tick > 500) {
+    process_table[0]->status = 0;
   }
 }
 
