@@ -11,9 +11,14 @@ u32 malloc_addr; // use a base address from which we can align our malloc calls
 struct pcb **process_table; // The process table. we define this as a pointer
                             // to a dynamically allocated array of pcb pointers
 
-u8 pid;
+u8    pid;
 
-void kernel_main();
-void user_input(char *input);
+void  kernel_main();
+void  user_input(char *input);
+void  draw_process_table(unsigned int tick);
+
+int   create_process(char* name, int(*function)(void));
+void  pause_process(unsigned int tick);
+void  remove_process(int pid);
 
 #endif

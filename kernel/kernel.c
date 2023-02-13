@@ -8,6 +8,7 @@
 #include "../libc/mem.h"
 #include "../libc/function.h"
 
+// TODO: fix process function location?
 int p1v = 0;
 int process1() {
   return ++p1v;
@@ -18,11 +19,6 @@ int process2() {
   p2v += 2;
   return p2v;
 }
-
-// internal functions
-void draw_process_table(unsigned int tick);
-int create_process(char* name, int(*function)(void));
-void pause_process(unsigned int tick);
 
 void kernel_main() {
   set_screen_attr(WHITE_ON_BLACK);
@@ -56,7 +52,7 @@ void draw_process_table(unsigned int tick)
   itoa(tick, tick_str);
   print(tick_str);
   print("\n");
-  for(i = 0; i < 256; i++) {
+  for(i = 0; i < MAX_PROCESSES; i++) {
     if(process_table[i] == 0x00) continue;
 
     print("\n");
@@ -87,6 +83,33 @@ void draw_process_table(unsigned int tick)
   }
 }
 
+// returns the new process ID
+int create_process(char* name, int(*function)(void)) {
+  // FIXME: disgustingly dirty pid collision check. if a program exists at the pid,
+  // we can just assume we've wrapped around.
+
+  struct pcb *process = (void*) malloc(sizeof(*process));
+
+  process->name = name;
+  process->function = function;
+
+  int i;
+  int wrapped = 1;
+  for(i = 0; i < MAX_PROCESSES; i++) {
+    if(process_table[i] != 0x00) continue;
+
+    process_table[i] = process;
+    wrapped = 0;
+    break;
+  }
+
+  if(wrapped) {
+    panic("process table full");
+  }
+
+  return pid;
+}
+
 void pause_process(unsigned int tick) {
   // pause after 5 seconds
   if(tick > 250) {
@@ -96,23 +119,19 @@ void pause_process(unsigned int tick) {
   if(tick > 500) {
     process_table[0]->status = 0;
   }
+
+  if(tick > 400) {
+    remove_process(1);
+  }
 }
 
-// returns the new process ID
-int create_process(char* name, int(*function)(void)) {
-  // FIXME: disgustingly dirty pid collision check. if a program exists at the pid,
-  // we can just assume we've wrapped around.
-  if(process_table[pid] != 0x00)
-    panic("process table collision");
+void remove_process(int pid) {
+  if(process_table[pid] == 0x00) return;
 
-  struct pcb *process = (void*) malloc(sizeof(*process));
+  process_table[pid] = 0x00;
 
-  process->name = name;
-  process->function = function;
-
-  process_table[pid++] = process;
-
-  return pid;
+  // TODO: FIXME: add free() func (after paging)
+  // free(process);
 }
 
 void user_input(char* input) {
@@ -122,7 +141,6 @@ void user_input(char* input) {
   }
 
   if(strcmp(input, "TPANIC") == 0) {
-    // test panic
     asm volatile("int $3");
   }
 
@@ -130,6 +148,4 @@ void user_input(char* input) {
   print(input);
   print("\n> ");
 }
-
-// panics when interrupt received
 
