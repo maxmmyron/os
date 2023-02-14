@@ -7,6 +7,7 @@
 #include "../drivers/screen.h"
 #include "../libc/mem.h"
 #include "../libc/function.h"
+#include "../cpu/paging.h"
 
 // TODO: fix process function location?
 int p1v = 0;
@@ -27,6 +28,7 @@ void kernel_main() {
 
   isr_install();
   irq_install();
+  initalize_paging();
 
   pid = 0;
 
