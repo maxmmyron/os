@@ -2,7 +2,8 @@ C_SOURCES = $(wildcard kernel/*.c drivers/*.c libc/*.c cpu/*.c)
 C_HEADERS = $(wildcard kernel/*.h drivers/*.h libc/*.h cpu/*.h)
 
 # syntax for file extension replacement
-OBJ = ${C_SOURCES:.c=.o cpu/interrupt.o}
+INT_OBJ = $(C_SOURCES:.c=.o cpu/interrupt.o)
+PAG_OBJ = $(C_SOURCES:.c=.o cpu/enable_paging.o)
 
 CC = /usr/local/i386elfgcc/bin/i386-elf-gcc
 GDB = /usr/local/i386elfgcc/bin/i386-elf-gdb
@@ -17,11 +18,11 @@ os-img.bin: boot/boot.bin kernel.bin
 
 # build the kernel binary
 # --oformat binary removes symbols that we dont need
-kernel.bin: boot/kernel_entry.o ${OBJ}
+kernel.bin: boot/kernel_entry.o $(INT_OBJ) $(PAG_OBJ)
 	i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # for debugging
-kernel.elf: boot/kernel_entry.o ${OBJ}
+kernel.elf: boot/kernel_entry.o $(INT_OBJ) $(PAG_OBJ)
 	i386-elf-ld -o $@ -Ttext 0x1000 $^
 
 run: os-img.bin
