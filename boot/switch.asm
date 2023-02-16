@@ -35,7 +35,7 @@ init_pm:
   mov   fs, ax
   mov   gs, ax
 
-  mov   ebp, 0x90000      ; update the stack
+  mov   ebp, 0x7bff      ; update the stack
   mov   esp, ebp
 
   call  begin_pm          ; start running useful 32-bit code

@@ -2,6 +2,7 @@
 #include "idt.h"
 #include "ports.h"
 #include "timer.h"
+#include <stdint.h>
 #include "../drivers/keyboard.h"
 #include "../kernel/kernel.h"
 #include "../libc/function.h"

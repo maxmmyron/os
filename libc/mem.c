@@ -24,7 +24,7 @@ u32 placement_address = 0x10000;
 u32 malloc_internal(u32 size, int align, u32 *phys_addr) {
   if (align == 1 && (placement_address & 0x00000FFF)) // If the address is not already page-aligned
   {
-    // Align it.
+    // Align placement address
     placement_address &= 0xFFFFF000;
     placement_address += 0x1000;
   }

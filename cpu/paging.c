@@ -6,10 +6,10 @@
 #include "../libc/mem.h"
 
 // The kernel's page directory
-paging_directory_t *kernel_directory=0;
+page_directory *kernel_directory=0;
 
 // The current page directory;
-paging_directory_t *current_directory=0;
+page_directory *current_directory=0;
 
 // create a bitset of frames
 u32 *frames;
@@ -25,7 +25,7 @@ extern u32 placement_address;
 static void set_frame(u32 frame_addr) {
   u32 frame = frame_addr / 0x1000;
   u32 idx = BIT_INDEX(frame);
-  u32 offset = BIT_INDEX(frame);
+  u32 offset = BIT_OFFSET(frame);
 
   frames[idx] |= (0x1 << offset);
 }
@@ -34,7 +34,7 @@ static void set_frame(u32 frame_addr) {
 static void clear_frame(u32 frame_addr) {
   u32 frame = frame_addr / 0x1000;
   u32 idx = BIT_INDEX(frame);
-  u32 offset = BIT_INDEX(frame);
+  u32 offset = BIT_OFFSET(frame);
 
   frames[idx] &= ~(0x1 << offset);
 }
@@ -65,7 +65,7 @@ static u32 get_first_frame() {
   return (u32)-1;
 }
 
-void allocate_frame(page_t *page, int is_kernel, int is_writeable) {
+void allocate_frame(page_table_entry *page, int is_kernel, int is_writeable) {
   // if frame is already allocated, then we can return early.
   if(page->frame != 0) return;
 
@@ -78,11 +78,11 @@ void allocate_frame(page_t *page, int is_kernel, int is_writeable) {
   // set page bits and address
   page->present = 1;
   page->rw=(is_writeable) ? 1 : 0;
-  page->user=(is_kernel) ? 1 : 0;
+  page->user=(is_kernel) ? 0 : 1;
   page->frame=idx;
 }
 
-void free_frame(page_t *page) {
+void free_frame(page_table_entry *page) {
   u32 frame;
 
   // if the page wasn't actually allocated return early
@@ -105,8 +105,8 @@ void initalize_paging(){
   mset(frames, 0, BIT_INDEX(nframes));
 
   // create a new page directory
-  kernel_directory =  (paging_directory_t*)malloc_a(sizeof(paging_directory_t));
-  mset((u32*)kernel_directory, 0, sizeof(paging_directory_t));
+  kernel_directory =  (page_directory*)malloc_a(sizeof(page_directory));
+  mset((u32*)kernel_directory, 0, sizeof(page_directory));
   // set the current page directory to the kernel page directory
   current_directory = kernel_directory;
 
@@ -127,45 +127,50 @@ void initalize_paging(){
   switch_page_directory(kernel_directory);
 }
 
-void switch_page_directory(paging_directory_t *dir) {
+void switch_page_directory(page_directory *dir) {
   current_directory = dir;
 
+  // char dir_str[40];
+  // htoa((int)(&dir->tables_phys), dir_str);
+  // panic(dir_str);
+
   // move the physical address of the page table into the cr3 register
-  asm volatile("mov %0, %%cr3" : : "r" (&dir->tables_phys));
+  asm volatile("mov %0, %%cr3":: "r"(&dir->tables_phys));
   u32 cr0;
   // move the contents of the cr0 register into cr0 variable (since we can't
   // directly edit the contents of cr0)
-  asm volatile("mov %%cr0, %0" : "=r" (cr0));
+  asm volatile("mov %%cr0, %0": "=r"(cr0));
   cr0 |= 0x80000000; // enable the paging bit
   // move cr0 variable back into cr0 register
-  asm volatile("mov %0, %%cr0" : : "r"(cr0));
+  asm volatile("mov %0, %%cr0":: "r"(cr0));
 }
 
-page_t *get_page(u32 addr, int make, paging_directory_t *dir) {
+page_table_entry *get_page(u32 addr, int make, page_directory *dir) {
   // divide by 0x1000 to get as index
   addr /= 0x1000;
   // get page table with this addr index
   u32 table_idx = addr / 1024;
-  if(dir->tables[table_idx])
+  if(dir->page_tables[table_idx])
     // if this table is already assigned, then return the page at the addr
-    return &dir->tables[table_idx]->pages[addr%1024];
+    return &dir->page_tables[table_idx]->pages[addr%1024];
   else if(make) {
     // otherwise, make a new page
     u32 phys_table_addr;
     // use malloc_ap so we can store the physical address
-    dir->tables[table_idx] = (page_table_t*)malloc_ap(sizeof(page_table_t), &phys_table_addr);
-    mset((u32*)(dir->tables[table_idx]), 0, 0x1000);
+    dir->page_tables[table_idx] = (page_table*)malloc_ap(sizeof(page_table), &phys_table_addr);
+    mset((u32*)(dir->page_tables[table_idx]), 0, 0x1000);
     dir->tables_phys[table_idx] = phys_table_addr | 0x7;
-    return &dir->tables[table_idx]->pages[addr%1024];
+    return &dir->page_tables[table_idx]->pages[addr%1024];
   }
   else return 0;
 }
 
 void handle_page_fault(registers_t regs) {
-  UNUSED(regs);
-  u32 fault_addr;
+  asm("mov %0, %%eax":: "r"(regs.err_code));
+  while(1);
+  //u32 fault_addr;
   // move the fault address into the cr2 register
-  asm volatile("mov %%cr2, %0" : "=r"(fault_addr));
+  //asm volatile("mov %%cr2, %0" : "=r"(fault_addr));
 
   // sus out error cause from error code
   // int present = !(regs.err_code & 0x1);   // Page not present
@@ -192,5 +197,5 @@ void handle_page_fault(registers_t regs) {
 
   // page_fault_msg+=fault_addr_str;
 
-  panic("page fault");
+  //panic("page fault");
 }

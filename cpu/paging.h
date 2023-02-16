@@ -54,16 +54,16 @@ typedef struct {
   u32 frame     : 20; // frame address (right-shifted 12 bits). a frame address
                       // points to a 4KiB address of memory
 
-} __attribute__((packed)) page_t;
+} __attribute__((packed)) page_table_entry;
 
 // the page table contains 1024 page table entires
 typedef struct {
-  page_t pages[1024];
-} __attribute__((packed)) page_table_t;
+  page_table_entry pages[1024];
+} __attribute__((packed)) page_table;
 
 // the page directory consits of 1024 page tables
 typedef struct {
-  page_table_t *tables[1024];   // create an array of pointers to page tables.
+  page_table *page_tables[1024];   // create an array of pointers to page tables.
 
   u32 tables_phys[1024];        // array of pointers to the *physical* addresses
                                 // of each page table. we use this for loading
@@ -74,19 +74,19 @@ typedef struct {
                                 // this because when we allocate our kernel heap
                                 // the directory may be in a different location
                                 // in virtual memory.
-} __attribute__((packed)) paging_directory_t;
+} __attribute__((packed)) page_directory;
 
 // sets up the environment with page directories, and enabled paging at the asm
 // level.
 void initalize_paging();
 
 // loads the specified page directory into the CR3 register.
-void switch_page_directory(paging_directory_t *dir);
+void switch_page_directory(page_directory *dir);
 
 // returns a pointer to the page required.
 // if make is set, then we will create the page table if it doesn't exist where
 // it should
-page_t *get_page(u32 addr, int make, paging_directory_t *dir);
+page_table_entry *get_page(u32 addr, int make, page_directory *dir);
 
 // handler function in the event of page faults.
 void handle_page_fault(registers_t regs);
