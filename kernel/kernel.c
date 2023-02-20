@@ -28,7 +28,7 @@ void kernel_main() {
 
   isr_install();
   irq_install();
-  initalize_paging();
+  // initalize_paging();
 
   pid = 0;
 
